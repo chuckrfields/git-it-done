@@ -1,4 +1,5 @@
 var issueContainerEL = document.querySelector("#issues-container");
+var limitWarningEL = document.querySelector("#limit-warning");
 
 var getRepoIssues = function(repo) {
     console.log(repo);
@@ -10,6 +11,21 @@ var getRepoIssues = function(repo) {
             response.json().then(function(data) {
                 console.log(data);
                 displayIssues(data);
+
+                // check if api has paginated issues by getting "link" from response headers, if it exists
+                // GitHub generates link in header for repos that have more than 30 issues
+                if (response.headers.get("Link")) {
+                    console.log("repo has more than 30 issues");
+                    limitWarningEL.textContent = "To see more than 30 issues, visit ";
+
+                    var linkEL = document.createElement("a");
+                    linkEL.textContent = "See more issues on GitHub.com";
+                    linkEL.setAttribute("href", "https://github.com/" + repo + "/issues");
+                    linkEL.setAttribute("target", "_blank");
+
+                    // append to warning container
+                    limitWarningEL.appendChild(linkEL);
+                }
             });
         }
         else {
