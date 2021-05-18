@@ -1,4 +1,4 @@
-# git-it-done
+# Git-it-done
 
 ## Purpose
 A website that offers the ability to search GitHub user public repositories
